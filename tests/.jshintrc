@@ -44,7 +44,9 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "d3",
+    "dimple"
   ],
   "node": false,
   "browser": false,
