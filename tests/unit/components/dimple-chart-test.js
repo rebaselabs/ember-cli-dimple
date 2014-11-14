@@ -40,7 +40,7 @@ test('it can perform a basic charting subroutine', function() {
   // appends the component to the page
   var dom = this.append();
 
-  ok(dom.find("svg rect.dimple-hello"));
-  ok(dom.find("svg rect.dimple-world"));
+  ok(dom.find("svg rect.dimple-hello").length > 0);
+  ok(dom.find("svg rect.dimple-world").length > 0);
 
 });

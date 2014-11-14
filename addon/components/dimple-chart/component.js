@@ -81,7 +81,8 @@ var DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    */
   _didInsertElement: (function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
-      this.dimple.newSvg("#" + (this.$().attr("id")));
+      var svg = this.dimple.newSvg("#" + (this.$().attr("id")));
+      this.set("svg", svg);
       return this.trigger("didInsertSVG");
     });
   }).on("didInsertElement"),
