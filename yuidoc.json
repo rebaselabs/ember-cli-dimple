@@ -1,0 +1,11 @@
+{
+  "name": "ember-cli-dimple",
+  "version": "0.0.0",
+  "options": {
+    "paths": [
+      "addon"
+    ],
+    "exclude": "vendor",
+    "outdir": "doc"
+  }
+}
