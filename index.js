@@ -14,6 +14,8 @@ module.exports = {
   	  development: app.bowerDirectory + '/dimple/dist/dimple.v2.1.0.js',
   	  production:  app.bowerDirectory + '/dimple/dist/dimple.v2.1.0.min.js'
   	});
+
+    app.import('vendor/styles/ember-cli-dimple.css');
   }
 
 };
