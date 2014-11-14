@@ -17,4 +17,14 @@ var app = new EmberAddon();
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
+app.import({
+  development: app.bowerDirectory + '/d3/d3.js',
+  production:  app.bowerDirectory + '/d3/d3.min.js'
+});
+
+app.import({
+  development: app.bowerDirectory + '/dimple/dist/dimple.v2.1.0.js',
+  production:  app.bowerDirectory + '/dimple/dist/dimple.v2.1.0.min.js'
+});
+
 module.exports = app.toTree();
