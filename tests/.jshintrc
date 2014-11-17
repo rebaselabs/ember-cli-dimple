@@ -46,7 +46,8 @@
     "currentPath",
     "currentRouteName",
     "d3",
-    "dimple"
+    "dimple",
+    "Ember"
   ],
   "node": false,
   "browser": false,
