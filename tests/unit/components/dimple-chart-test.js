@@ -25,6 +25,7 @@ test('it can perform a basic charting subroutine', function() {
 
   // creates the component instance
   var component = this.subject({
+    drawDuration: 0,
     customizeChart: function(chart){
       chart.addCategoryAxis("x", "Word");
       chart.addMeasureAxis("y", "Awesomeness");
@@ -42,5 +43,53 @@ test('it can perform a basic charting subroutine', function() {
 
   ok(dom.find("svg rect.dimple-hello").length > 0);
   ok(dom.find("svg rect.dimple-world").length > 0);
+
+});
+
+test('it can redraw when changing data', function() {
+  expect(4);
+
+  // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    customizeChart: function(chart){
+      chart.addCategoryAxis("x", "Word");
+      chart.addMeasureAxis("y", "Awesomeness");
+      chart.addSeries(null, dimple.plot.bar);
+    }
+  });
+
+  Ember.run(function(){
+    component.set("data", [
+      { "Word":"Hello", "Awesomeness":1000 },
+      { "Word":"World", "Awesomeness":1000 }
+    ]);
+  });
+
+  // appends the component to the page
+  var dom = this.append();
+
+  ok(dom.find("svg rect.dimple-hello").length === 1, "There should be one bar");
+  var height = dom.find("svg rect.dimple-hello").attr("height");
+  ok(height > 0, "It should have a height");
+
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+
+    Ember.run.next(function(){
+      component.set("data", [
+        { "Word":"Hello", "Awesomeness":500 },
+        { "Word":"World", "Awesomeness":1000 }
+      ]);
+
+      Ember.run.next(function(){
+
+        ok(dom.find("svg rect.dimple-hello").length === 1, "There should still be one bar");
+        var height_2 = dom.find("svg rect.dimple-hello").attr("height");
+        ok(parseInt(height, 10) > parseInt(height_2, 10), "It should have a shorter height");
+        resolve();
+      });
+    });
+
+  });
 
 });
