@@ -38,6 +38,8 @@ test('it can perform a basic charting subroutine', function() {
     { "Word":"World", "Awesomeness":3000 }
   ]);
 
+  component.get("chart"); // force it to become observed
+
   // appends the component to the page
   var dom = this.append();
 
@@ -65,6 +67,8 @@ test('it can redraw when changing data', function() {
       { "Word":"World", "Awesomeness":1000 }
     ]);
   });
+
+  component.get("chart"); // force it to become observed
 
   // appends the component to the page
   var dom = this.append();
@@ -133,6 +137,8 @@ test('it uses remapped data for charting', function() {
     }
   });
 
+  component.get("chart"); // force it to become observed
+
   Ember.run(function(){
     component.set("data", []);
   });
@@ -199,6 +205,31 @@ test ("remap is called whenever data changes", function(){
     }
     Ember.run.next(function(){
       ok(counter >= _testRuns, "Remap should be called at least as many times as the setter, give or take");
+    });
+  });
+
+});
+
+test ("remap is not called when data is empty", function(){
+
+  var counter = 0;
+    // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    remap: function(data) {
+      counter++;
+    }
+  });
+
+  var _testRuns = 3;
+  Ember.run(function(){
+    for (var i = _testRuns; i >= 0; i--) {
+      component.set("data", null);
+      // Get the data so it'll be sure to update.
+      component.get("_data");
+    }
+    Ember.run.next(function(){
+      equal(counter, 0, "Remap should not be called at least as many times as the setter, give or take");
     });
   });
 

@@ -90,7 +90,10 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    * @type {Array}
    */
   _data: (function() {
-    return this.remap(this.get("data"));
+    var data;
+    if (data = this.get("data")) {
+      return this.remap(data);
+    }
   }).property("data"),
 
   /**
@@ -114,16 +117,6 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
       return this.trigger("didInsertSvg", svg);
     });
   }).on("didInsertElement"),
-
-  /**
-   * Get some properties so they'll be put in the game
-   *
-   * @private
-   * @method _initObservedProperties
-   */
-  _initObservedProperties: (function() {
-    return this.get("chart");
-  }).on("init"),
 
   /**
    * Protected init method for chart model.
