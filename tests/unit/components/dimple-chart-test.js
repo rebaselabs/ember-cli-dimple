@@ -94,6 +94,26 @@ test('it can redraw when changing data', function() {
 
 });
 
+test('it won\'t draw when there is no data', function(){
+  expect(1);
+
+  // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    customizeChart: function(chart){
+      chart.addCategoryAxis("x", "Word");
+      chart.addMeasureAxis("y", "Awesomeness");
+      chart.addSeries(null, dimple.plot.bar);
+    }
+  });
+
+  // appends the component to the page
+  var dom = this.append();
+
+  ok(dom.find("svg").children().length === 1, "There should be one lone g tag");
+
+});
+
 test('it uses remapped data for charting', function() {
   expect(2);
 
@@ -167,14 +187,12 @@ test ("remap is called whenever data changes", function(){
     drawDuration: 0,
     remap: function(data) {
       counter++;
-      console.log("yo");
     }
   });
 
   var _testRuns = 3;
   Ember.run(function(){
     for (var i = _testRuns; i >= 0; i--) {
-      console.log(component.get("data"));
       component.set("data", i);
       // Get the data so it'll be sure to update.
       component.get("_data");
