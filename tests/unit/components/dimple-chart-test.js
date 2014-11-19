@@ -93,3 +93,95 @@ test('it can redraw when changing data', function() {
   });
 
 });
+
+test('it uses remapped data for charting', function() {
+  expect(2);
+
+  // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    remap: function(){
+      return [
+        { "Word":"Hello", "Awesomeness":1000 },
+        { "Word":"World", "Awesomeness":1000 }
+      ];
+    },
+    customizeChart: function(chart){
+      chart.addCategoryAxis("x", "Word");
+      chart.addMeasureAxis("y", "Awesomeness");
+      chart.addSeries(null, dimple.plot.bar);
+    }
+  });
+
+  Ember.run(function(){
+    component.set("data", []);
+  });
+
+  // appends the component to the page
+  var dom = this.append();
+
+  ok(dom.find("svg rect.dimple-hello").length === 1, "There should be at least one bar");
+
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+
+    Ember.run.next(function(){
+      component.set("data", "");
+
+      Ember.run.next(function(){
+
+        ok(dom.find("svg rect.dimple-hello").length === 1, "There should still be at least one bar");
+        resolve();
+      });
+    });
+
+  });
+
+});
+
+test("It does not mutate data", function(){
+
+  // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    remap: function(data) {
+      return [];
+    }
+  });
+
+  Ember.run(function(){
+    component.set("data", [
+      { "Word":"Hello", "Awesomeness":1000 },
+      { "Word":"World", "Awesomeness":1000 }
+    ]);
+  });
+
+  ok (component.get("data").length > 0);
+
+});
+
+test ("remap is called whenever data changes", function(){
+
+  var counter = 0;
+    // creates the component instance
+  var component = this.subject({
+    drawDuration: 0,
+    remap: function(data) {
+      counter++;
+      console.log("yo");
+    }
+  });
+
+  var _testRuns = 3;
+  Ember.run(function(){
+    for (var i = _testRuns; i >= 0; i--) {
+      console.log(component.get("data"));
+      component.set("data", i);
+      // Get the data so it'll be sure to update.
+      component.get("_data");
+    }
+    Ember.run.next(function(){
+      ok(counter >= _testRuns, "Remap should be called at least as many times as the setter, give or take");
+    });
+  });
+
+});
