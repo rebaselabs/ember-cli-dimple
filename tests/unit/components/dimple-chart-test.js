@@ -38,8 +38,6 @@ test('it can perform a basic charting subroutine', function() {
     { "Word":"World", "Awesomeness":3000 }
   ]);
 
-  component.get("chart"); // force it to become observed
-
   // appends the component to the page
   var dom = this.append();
 
@@ -67,8 +65,6 @@ test('it can redraw when changing data', function() {
       { "Word":"World", "Awesomeness":1000 }
     ]);
   });
-
-  component.get("chart"); // force it to become observed
 
   // appends the component to the page
   var dom = this.append();
@@ -136,8 +132,6 @@ test('it uses remapped data for charting', function() {
       chart.addSeries(null, dimple.plot.bar);
     }
   });
-
-  component.get("chart"); // force it to become observed
 
   Ember.run(function(){
     component.set("data", []);

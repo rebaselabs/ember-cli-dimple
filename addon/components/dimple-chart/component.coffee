@@ -164,6 +164,10 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented,
     @updateChart(true)
   )
 
+  onInit: (->
+    @get("chart") # call this to ensure the chart will be observed
+  ).on("init")
+
 )
 
 `export default DimpleChartComponent`

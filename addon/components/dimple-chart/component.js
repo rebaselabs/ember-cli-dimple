@@ -185,7 +185,10 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    */
   onResizeEnd: (function() {
     return this.updateChart(true);
-  })
+  }),
+  onInit: (function() {
+    return this.get("chart");
+  }).on("init")
 });
 
 export default DimpleChartComponent;
