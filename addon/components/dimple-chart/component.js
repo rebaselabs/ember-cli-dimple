@@ -32,24 +32,16 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
     if (!(chart = this.get("chartModel"))) {
       return;
     }
-    chart.data = this.get("data");
+    chart.data = this.get("_data");
     return chart;
-  }).property("chartModel", "data"),
+  }).property("chartModel", "_data"),
 
   /**
-   * Data property. When used as a setter, the passed-in data will first be remapped
-   * according to the `@remap` function.
+   * Data property. This will be passed in to the component from the outside world.
    *
-   * @param  {String} key   The key for the property. This is used by Ember.
-   * @param  {Mixed}  value Optional param when using data as a setter.
-   * @return {Mixed}        The remapped data.
+   * @property {Mixed} data The data to be charted
    */
-  data: (function(key, value) {
-    if (value) {
-      this.set("_data", this.remap(value));
-    }
-    return this.get("_data");
-  }).property("_data"),
+  data: null,
 
   /**
    * Remap passed-in data.
@@ -90,14 +82,16 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
   d3: d3,
 
   /**
-   * Cached data.
+   * Internal data. This is what the chart will use to draw.
    *
    * @private
    * @property {Array} _data The internally stored data when the `data` computed property
    * is used as a setter.
    * @type {Array}
    */
-  _data: null,
+  _data: (function() {
+    return this.remap(this.get("data"));
+  }).property("data"),
 
   /**
    * The ChartModel: A Dimple chart attached to an SVG
