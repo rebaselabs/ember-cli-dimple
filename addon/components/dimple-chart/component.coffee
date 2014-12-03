@@ -25,11 +25,25 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented,
    *
    * @property {Dimple} chart The complete chart object, ready to `draw()`
   ###
-  chart: (->
-    return unless chart = @get("chartModel")
-    chart.data = @get("_data")
-    chart
-  ).property("chartModel", "_data")
+  chart: ( ->
+    return unless (svg = @get("svg")) and (data = @get("_data"))
+    chartModel = new @dimple.chart(svg, data)
+    @_customizeChart chartModel
+    @get("customizeChart").call @, chartModel
+    chartModel
+  ).property("_data", "svg")
+
+  ###*
+   * The SVG element
+   *
+   * @property {SVG} svg The SVG element for the chart.
+   * @type {SVG}
+  ###
+  svg: null
+
+  onDidInsertSvg: ((svg) ->
+    @set("svg", svg)
+  ).on("didInsertSvg")
 
   ###*
    * Data property. This will be passed in to the component from the outside world.
@@ -88,14 +102,6 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented,
   ).property("data")
 
   ###*
-   * The ChartModel: A Dimple chart attached to an SVG
-   *
-   * @property {Object} chartModel The current chart model.
-   * @type {Dimple}
-  ###
-  chartModel: null
-
-  ###*
    * Private didInsert handler
    * Draw the SVG and initialize chart drawing.
    *
@@ -106,20 +112,6 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented,
       svg = @dimple.newSvg "#" + @$().attr("id")
       @trigger("didInsertSvg", svg)
   ).on("didInsertElement")
-
-  ###*
-   * Protected init method for chart model.
-   *
-   * @protected
-   * @param  {Dimple SVG} svg The newly created SVG
-  ###
-  _initChartModel: ((svg)->
-    return unless svg
-    chartModel = new @dimple.chart(svg, [])
-    @_customizeChart chartModel
-    @get("customizeChart").call @, chartModel
-    @set("chartModel", chartModel)
-  ).on("didInsertSvg")
 
   ###*
    * Private customizeChart method.
@@ -163,10 +155,6 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented,
   onResizeEnd: (->
     @updateChart(true)
   )
-
-  onInit: (->
-    @get("chart") # call this to ensure the chart will be observed
-  ).on("init")
 
 )
 
