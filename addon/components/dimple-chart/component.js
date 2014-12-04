@@ -21,6 +21,7 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    * @type {Number}
    */
   drawDuration: 1000,
+  _chart: null,
 
   /**
    * The chart object with all settings applied and data attached.
@@ -32,9 +33,13 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
     if (!((svg = this.get("svg")) && (data = this.get("_data")))) {
       return;
     }
-    chartModel = new this.dimple.chart(svg, data);
-    this._customizeChart(chartModel);
-    this.get("customizeChart").call(this, chartModel);
+    if (!(chartModel = this.get("_chart"))) {
+      chartModel = new this.dimple.chart(svg, data);
+      this._customizeChart(chartModel);
+      this.get("customizeChart").call(this, chartModel);
+      this.set("_chart", chartModel);
+    }
+    chartModel.data = data;
     return chartModel;
   }).property("_data", "svg"),
 
@@ -173,7 +178,10 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    */
   onResizeEnd: (function() {
     return this.updateChart(true);
-  })
+  }),
+  onInit: (function() {
+    return this.get("chart");
+  }).on("init")
 });
 
 export default DimpleChartComponent;
