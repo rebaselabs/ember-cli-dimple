@@ -14,7 +14,7 @@ var ResizeMixin = Ember.Mixin.create({
    * resizeDelay: Time in ms to debounce before triggering resizeEnd
    * @type {Number}
    */
-  resizeDelay: 100,
+  resizeDelay: 250,
 
   /**
    * flags whether the window is currently resizing

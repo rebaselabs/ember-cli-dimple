@@ -44,11 +44,9 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
    * @property {SVG} svg The SVG element for the chart.
    * @type {SVG}
   ###
-  svg: null
-
-  onDidInsertSvg: ((svg) ->
-    @set("svg", svg)
-  ).on("didInsertSvg")
+  svg: (->
+    @dimple.newSvg "#" + @$().attr("id")
+  ).property()
 
   ###*
    * Data property. This will be passed in to the component from the outside world.
@@ -107,18 +105,6 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
   ).property("data")
 
   ###*
-   * Private didInsert handler
-   * Draw the SVG and initialize chart drawing.
-   *
-   * @private
-  ###
-  _didInsertElement: (->
-    Ember.run.scheduleOnce "afterRender", this, ->
-      svg = @dimple.newSvg "#" + @$().attr("id")
-      @trigger("didInsertSvg", svg)
-  ).on("didInsertElement")
-
-  ###*
    * Private customizeChart method.
    *
    * @method _customizeChart
@@ -162,7 +148,8 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
   )
 
   onInit: (->
-    @get("chart")
-  ).on("init")
+    Ember.run.scheduleOnce "afterRender", @, ->
+      @get("chart")
+  ).on("didInsertElement")
 
 `export default DimpleChartComponent`
