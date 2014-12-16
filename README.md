@@ -95,6 +95,8 @@ The component attempts to redraw on window resize using a modified version of [r
 * `npm install`
 * `bower install`
 
+When updating, please make make sure to pull the latest dimple with `bower update dimple`. This package relies on release 2.1.2 or higher.
+
 ## Running
 
 * `ember server`
