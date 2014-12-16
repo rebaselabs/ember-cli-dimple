@@ -139,7 +139,7 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
     return Ember.run.scheduleOnce("afterRender", this, function() {
       return this.doDraw(chart, noDataUpdate);
     });
-  }).observes("chart"),
+  }).observes("chart").on("didInsertElement"),
 
   /**
    * The actual draw function
@@ -163,12 +163,7 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    */
   onResizeEnd: (function() {
     return this.updateChart(true);
-  }),
-  onInit: (function() {
-    return Ember.run.scheduleOnce("afterRender", this, function() {
-      return this.get("chart");
-    });
-  }).on("didInsertElement")
+  })
 });
 
 export default DimpleChartComponent;

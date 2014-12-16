@@ -122,10 +122,10 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
    * @param {Boolean} noDataUpdate True if the data should not be refreshed.
   ###
   updateChart: ((noDataUpdate) ->
-    return  unless chart = @get("chart")
+    return unless chart = @get("chart")
     Ember.run.scheduleOnce "afterRender", @, ->
       @doDraw chart, noDataUpdate
-  ).observes("chart")
+  ).observes("chart").on("didInsertElement")
 
   ###*
    * The actual draw function
@@ -146,10 +146,5 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
   onResizeEnd: (->
     @updateChart(true)
   )
-
-  onInit: (->
-    Ember.run.scheduleOnce "afterRender", @, ->
-      @get("chart")
-  ).on("didInsertElement")
 
 `export default DimpleChartComponent`
