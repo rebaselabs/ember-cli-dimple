@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-dimple",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -14,7 +14,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "alex.kessaris@rebaselabs.com",
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.2.0",
