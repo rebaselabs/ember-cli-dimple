@@ -152,7 +152,9 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
     if (!((svg = chart != null ? (_ref = chart.svg) != null ? _ref[0] : void 0 : void 0) && (!Ember.isEmpty(chart.data)))) {
       return;
     }
-    return chart.draw(this.get("drawDuration", noDataUpdate));
+    this.sendAction("willDraw", this);
+    chart.draw(this.get("drawDuration", noDataUpdate));
+    return this.sendAction("didDraw", this);
   },
 
   /**

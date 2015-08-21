@@ -135,7 +135,9 @@ DimpleChartComponent = Ember.Component.extend ResizeMixin, Ember.Evented,
   ###
   doDraw: (chart, noDataUpdate) ->
     return unless (svg = chart?.svg?[0]) and (!Ember.isEmpty(chart.data))
+    @sendAction "willDraw", @
     chart.draw @get("drawDuration", noDataUpdate)
+    @sendAction "didDraw", @
 
   ###*
    * Update the chart when resized.
