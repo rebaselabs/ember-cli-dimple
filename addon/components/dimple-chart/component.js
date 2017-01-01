@@ -80,7 +80,7 @@ DimpleChartComponent = Ember.Component.extend(ResizeMixin, Ember.Evented, {
    * @method customizeChart
    * @param {Dimple} chart The chart to be customized
    */
-  customizeChart: Ember.K,
+  customizeChart() {},
 
   /**
    * Local copy of DimpleJS.

@@ -29,21 +29,21 @@ var ResizeMixin = Ember.Mixin.create({
    *
    * @method onResizeStart
    */
-  onResizeStart: Ember.K,
+  onResizeStart() {},
 
   /**
    * Triggered when resizing ends. Override in subclasses
    *
    * @method onResizeEnd
    */
-  onResizeEnd: Ember.K,
+  onResizeEnd() {},
 
   /**
    * Triggered (repeatedly) during resizing. Override in subclasses
    *
    * @method onResizeStart
    */
-  onResize: Ember.K,
+  onResize() {},
 
   /**
    * Implement a faux resizeEnd event.
